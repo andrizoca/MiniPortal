@@ -6,6 +6,7 @@ namespace MiniPortal.Data
     {
         List<Ticket> GetAll();
         void Add(Ticket ticket);
-        Ticket? GetById(int id);
+        Ticket? GetById(Guid id);
+        void Delete(Ticket ticket);
     }
 }

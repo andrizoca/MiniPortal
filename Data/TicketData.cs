@@ -8,7 +8,7 @@ namespace MiniPortal.Data
         {
             new Ticket
             {
-                Id = 1,
+                Id = Guid.NewGuid(),
                 Title = "Error accessing portal",
                 Description = "User receives an access denied message.",
                 Status = "Open",
@@ -16,7 +16,7 @@ namespace MiniPortal.Data
             },
             new Ticket
             {
-                Id = 2,
+                Id = Guid.NewGuid(),
                 Title = "Report not loading",
                 Description = "Screen keeps loading indefinitely when opening report.",
                 Status = "In Progress",
@@ -31,14 +31,19 @@ namespace MiniPortal.Data
 
         public void Add(Ticket ticket)
         {
-            ticket.Id = _tickets.Count + 1;
+            ticket.Id = Guid.NewGuid();
             ticket.CreatedAt = DateTime.Now;
             _tickets.Add(ticket);
         }
 
-        public Ticket? GetById(int id)
+        public Ticket? GetById(Guid id)
         {
             return _tickets.FirstOrDefault(t => t.Id == id);
+        }
+
+        public void Delete(Ticket ticket)
+        {
+            _tickets.Remove(ticket);
         }
     }
 }

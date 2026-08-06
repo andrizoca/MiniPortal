@@ -27,6 +27,12 @@ namespace MiniPortal.Services
             _ticketData.Add(ticket);
         }
 
+        public void Delete(int id)
+        {
+            var ticket = GetById(id);
+            _ticketData.Delete(ticket);
+        }
+
         public Ticket GetById(int id)
         {
             ValidateIfTicketIdIsZero(id);

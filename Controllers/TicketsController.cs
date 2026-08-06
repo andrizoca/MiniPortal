@@ -33,6 +33,13 @@ public class TicketsController : Controller
         return RedirectToAction("Index");
     }
 
+    [HttpPost]
+    public IActionResult Delete(int id)
+    {
+        _ticketService.Delete(id);
+        return RedirectToAction("Index");
+    }
+
     [HttpGet]
     public IActionResult Details(int id)
     {

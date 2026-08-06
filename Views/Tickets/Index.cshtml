@@ -39,6 +39,9 @@
                 <td>@ticket.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
                 <td>
                     <a asp-controller="Tickets" asp-action="Details" asp-route-id="@ticket.Id" class="btn btn-sm btn-info text-white">Details</a>
+                    <form asp-controller="Tickets" asp-action="Delete" asp-route-id="@ticket.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger text-black" onclick="return confirm('Deseja realmente excluir este ticket?');">Delete</button>
+                    </form>
                 </td>
             </tr>
         }
