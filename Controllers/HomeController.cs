@@ -18,7 +18,7 @@ namespace MiniPortal.Controllers
             return View();
         }
 
-        public IActionResult Sobre()
+        public IActionResult About()
         {
             return View();
         }
