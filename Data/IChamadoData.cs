@@ -6,5 +6,6 @@ namespace MiniPortal.Data
     {
         List<Chamado> ObterTodos();
         void Adicionar(Chamado chamado);
+        Chamado? ObterPorId(int Id);
     }
 }

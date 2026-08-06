@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Views\Chamados\Create.cshtml.cs" />
-    <Compile Remove="Views\Chamados\Index.cshtml.cs" />
     <Compile Remove="Views\Home\Sobre.cs" />
     <Compile Remove="Views\Home\Sobre.cshtml.cs" />
   </ItemGroup>

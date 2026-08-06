@@ -1,0 +1,26 @@
+@model MiniPortal.Models.Ticket
+
+@{
+    ViewData["Title"] = "New Ticket";
+}
+
+<h1>New Ticket</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-controller="Tickets" asp-action="Create" method="post">
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Title</label>
+                <input asp-for="Title" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

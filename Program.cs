@@ -6,8 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IChamadoData, ChamadoData>();
-builder.Services.AddScoped<ChamadoService>();
+builder.Services.AddScoped<ITicketData, TicketData>();
+builder.Services.AddScoped<TicketService>();
 
 var app = builder.Build();
 
