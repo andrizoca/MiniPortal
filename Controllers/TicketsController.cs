@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using MiniPortal.Exceptions;
 using MiniPortal.Models;
 using MiniPortal.Services;
 
@@ -35,13 +36,14 @@ public class TicketsController : Controller
     [HttpGet]
     public IActionResult Details(int id)
     {
-        var ticket = _ticketService.GetById(id);
-
-        if (ticket == null)
+        try
+        {
+            var ticket = _ticketService.GetById(id);
+            return View(ticket);
+        }
+        catch(TicketNotFoundException)
         {
             return NotFound();
         }
-
-        return View(ticket);
     }
 }

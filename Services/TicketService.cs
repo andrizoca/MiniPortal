@@ -1,5 +1,7 @@
 using MiniPortal.Data;
+using MiniPortal.Exceptions;
 using MiniPortal.Models;
+using System.Diagnostics.CodeAnalysis; 
 
 namespace MiniPortal.Services
 {
@@ -25,9 +27,28 @@ namespace MiniPortal.Services
             _ticketData.Add(ticket);
         }
 
-        public Ticket? GetById(int id)
+        public Ticket GetById(int id)
         {
-            return _ticketData.GetById(id);
+            ValidateIfTicketIdIsZero(id);
+
+            var ticket = _ticketData.GetById(id);
+
+            ValidateIfTicketIsNotNull(ticket, id);
+
+            return ticket;
         }
+
+        private static void ValidateIfTicketIdIsZero(int id)
+        {
+            if (id == 0)
+                throw new TicketNotFoundException(id);
+        }
+
+        private static void ValidateIfTicketIsNotNull([NotNull] Ticket? ticket, int id)
+        {
+            if (ticket == null)
+                throw new TicketNotFoundException(id);
+        }
+
     }
 }
