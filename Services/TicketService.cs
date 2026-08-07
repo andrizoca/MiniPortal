@@ -27,15 +27,15 @@ namespace MiniPortal.Services
             _ticketData.Add(ticket);
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             var ticket = GetById(id);
             _ticketData.Delete(ticket);
         }
 
-        public Ticket GetById(int id)
+        public Ticket GetById(Guid id)
         {
-            ValidateIfTicketIdIsZero(id);
+            ValidateIfTicketIdIsEmpty(id);
 
             var ticket = _ticketData.GetById(id);
 
@@ -44,13 +44,13 @@ namespace MiniPortal.Services
             return ticket;
         }
 
-        private static void ValidateIfTicketIdIsZero(int id)
+        private static void ValidateIfTicketIdIsEmpty(Guid id)
         {
-            if (id == 0)
+            if (id == Guid.Empty)
                 throw new TicketNotFoundException(id);
         }
 
-        private static void ValidateIfTicketIsNotNull([NotNull] Ticket? ticket, int id)
+        private static void ValidateIfTicketIsNotNull([NotNull] Ticket? ticket, Guid id)
         {
             if (ticket == null)
                 throw new TicketNotFoundException(id);

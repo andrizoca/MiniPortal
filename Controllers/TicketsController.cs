@@ -34,14 +34,14 @@ public class TicketsController : Controller
     }
 
     [HttpPost]
-    public IActionResult Delete(int id)
+    public IActionResult Delete(Guid id)
     {
         _ticketService.Delete(id);
         return RedirectToAction("Index");
     }
 
     [HttpGet]
-    public IActionResult Details(int id)
+    public IActionResult Details(Guid id)
     {
         try
         {
