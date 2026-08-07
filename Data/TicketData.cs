@@ -45,5 +45,15 @@ namespace MiniPortal.Data
         {
             _tickets.Remove(ticket);
         }
+        public void Update(Ticket ticket)
+        {
+            var existingTicket = GetById(ticket.Id);
+            if (existingTicket != null)
+            {
+                existingTicket.Title = ticket.Title;
+                existingTicket.Description = ticket.Description;
+                existingTicket.Status = ticket.Status;
+            }
+        }
     }
 }

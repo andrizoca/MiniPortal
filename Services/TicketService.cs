@@ -21,8 +21,7 @@ namespace MiniPortal.Services
 
         public void Add(Ticket ticket)
         {
-            ticket.Status = "New";
-            ticket.CreatedAt = DateTime.Now;
+            NewTicketAdd(ticket);
 
             _ticketData.Add(ticket);
         }
@@ -31,6 +30,12 @@ namespace MiniPortal.Services
         {
             var ticket = GetById(id);
             _ticketData.Delete(ticket);
+        }
+
+        public void Update(Ticket ticket)
+        {
+            GetById(ticket.Id);
+            _ticketData.Update(ticket);
         }
 
         public Ticket GetById(Guid id)
@@ -54,6 +59,12 @@ namespace MiniPortal.Services
         {
             if (ticket == null)
                 throw new TicketNotFoundException(id);
+        }
+
+        private static void NewTicketAdd(Ticket ticket)
+        {
+            ticket.Status = "New";
+            ticket.CreatedAt = DateTime.Now;
         }
 
     }

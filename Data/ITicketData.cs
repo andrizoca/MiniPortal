@@ -8,5 +8,6 @@ namespace MiniPortal.Data
         void Add(Ticket ticket);
         Ticket? GetById(Guid id);
         void Delete(Ticket ticket);
+        void Update(Ticket ticket);
     }
 }
