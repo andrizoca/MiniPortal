@@ -1,59 +1,113 @@
+using System.Text.Json;
 using MiniPortal.Models;
 
 namespace MiniPortal.Data
 {
     public class TicketData : ITicketData
     {
-        private static readonly List<Ticket> _tickets = new()
+        private readonly string _filePath;
+        private static readonly object _fileLock = new();
+
+        public TicketData()
         {
-            new Ticket
+            _filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "tickets.json");
+        }
+
+        private List<Ticket> LoadTicketsFromFile()
+        {
+            lock (_fileLock)
             {
-                Id = Guid.NewGuid(),
-                Title = "Error accessing portal",
-                Description = "User receives an access denied message.",
-                Status = "Open",
-                CreatedAt = DateTime.Now
-            },
-            new Ticket
-            {
-                Id = Guid.NewGuid(),
-                Title = "Report not loading",
-                Description = "Screen keeps loading indefinitely when opening report.",
-                Status = "In Progress",
-                CreatedAt = DateTime.Now
+                if (!File.Exists(_filePath))
+                {
+                    SaveTicketsToFileUnsafe(new List<Ticket>());
+                    return new List<Ticket>();
+                }
+
+                var json = File.ReadAllText(_filePath);
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    return new List<Ticket>();
+                }
+
+                try
+                {
+                    return JsonSerializer.Deserialize<List<Ticket>>(json) ?? new List<Ticket>();
+                }
+                catch
+                {
+                    return new List<Ticket>();
+                }
             }
-        };
+        }
+
+        private void SaveTicketsToFile(List<Ticket> tickets)
+        {
+            lock (_fileLock)
+            {
+                SaveTicketsToFileUnsafe(tickets);
+            }
+        }
+
+        private void SaveTicketsToFileUnsafe(List<Ticket> tickets)
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            var json = JsonSerializer.Serialize(tickets, options);
+
+            var directory = Path.GetDirectoryName(_filePath);
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            File.WriteAllText(_filePath, json);
+        }
 
         public List<Ticket> GetAll()
         {
-            return _tickets;
-        }
-
-        public void Add(Ticket ticket)
-        {
-            ticket.Id = Guid.NewGuid();
-            ticket.CreatedAt = DateTime.Now;
-            _tickets.Add(ticket);
+            return LoadTicketsFromFile();
         }
 
         public Ticket? GetById(Guid id)
         {
-            return _tickets.FirstOrDefault(t => t.Id == id);
+            return LoadTicketsFromFile().FirstOrDefault(t => t.Id == id);
         }
 
-        public void Delete(Ticket ticket)
+        public void Add(Ticket ticket)
         {
-            _tickets.Remove(ticket);
+            if (ticket.Id == Guid.Empty)
+            {
+                ticket.Id = Guid.NewGuid();
+            }
+
+            if (ticket.CreatedAt == default)
+            {
+                ticket.CreatedAt = DateTime.Now;
+            }
+
+            var tickets = LoadTicketsFromFile();
+            tickets.Add(ticket);
+            SaveTicketsToFile(tickets);
         }
+
         public void Update(Ticket ticket)
         {
-            var existingTicket = GetById(ticket.Id);
+            var tickets = LoadTicketsFromFile();
+            var existingTicket = tickets.FirstOrDefault(t => t.Id == ticket.Id);
             if (existingTicket != null)
             {
                 existingTicket.Title = ticket.Title;
                 existingTicket.Description = ticket.Description;
                 existingTicket.Status = ticket.Status;
+                SaveTicketsToFile(tickets);
             }
+        }
+
+        public void Delete(Ticket ticket)
+        {
+            var tickets = LoadTicketsFromFile();
+            tickets.RemoveAll(t => t.Id == ticket.Id);
+            SaveTicketsToFile(tickets);
         }
     }
 }
+
