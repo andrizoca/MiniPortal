@@ -53,4 +53,18 @@ public class TicketsController : Controller
             return NotFound();
         }
     }
+
+    [HttpGet]
+    public IActionResult Edit(Guid id)
+    {
+        var ticket = _ticketService.GetById(id);
+        return View(ticket); 
+    }
+
+    [HttpPost]
+    public IActionResult Edit(Ticket ticket)
+    {
+         _ticketService.Update(ticket);
+        return RedirectToAction("Index");
+    }
 }

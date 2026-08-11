@@ -8,6 +8,10 @@
     <h1>Ticket Details #@Model.Id</h1>
 </div>
 
+<a asp-controller="Tickets" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-warning">
+     <i class="bi bi-pencil-square"></i> Edit
+</a>
+<br>
 <div class="card shadow-sm mb-4">
     <div class="card-header bg-primary text-white">
         <h5 class="card-title mb-0">@Model.Title</h5>

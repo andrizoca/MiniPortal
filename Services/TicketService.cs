@@ -63,7 +63,7 @@ namespace MiniPortal.Services
 
         private static void NewTicketAdd(Ticket ticket)
         {
-            ticket.Status = "New";
+            ticket.Status = TicketStatus.Open;
             ticket.CreatedAt = DateTime.Now;
         }
 
